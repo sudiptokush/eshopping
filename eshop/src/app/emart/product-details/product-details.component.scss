@@ -1,0 +1,184 @@
+.highlight
+{
+    color:red;
+}
+
+
+.name-highlight-rating-container
+{
+    border-bottom: 1px solid black;
+    height:6vh;
+    min-height: 39px;
+    .product-name
+    {
+        font-size:2.5em;
+        margin-left: .3em;
+        float: left;
+        line-height: 6vh;
+    }
+    .product-highlight
+    {
+        margin-left: 1.5%;
+        float:left;
+        line-height: 6vh;
+    }
+    .star-rating
+    {
+        vertical-align: super;
+        margin-left: 3%;
+    }
+}
+.image-dealer-specs-container
+{
+    height: 86vh;
+    min-height: 569px;
+    margin-left: 2px;
+    margin-right:18px;
+    .image-dealer-container
+    {
+        float: left;
+        width:35%;
+        height:100%;
+        .image-container
+        {
+            box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+            height: 70%;
+            padding-right: 5px;
+            .main-image
+            {
+                margin-left: auto;
+                margin-right: auto;
+                display: block;
+                min-width: 300px;
+            }
+            .image-icons
+            {
+                display: -webkit-box;
+                overflow: hidden;
+                overflow-x: scroll;
+                .icons
+                {
+                    height: 80px;
+                    width: 75px;
+                    float: left;
+                    border: 1px solid black;
+                }
+            }
+        }
+        .dealer-container
+        {
+            height:30%;
+        }
+    }
+    .spec-container
+    {
+        box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+        width: 64%;
+        height: 100%;
+        float: right;
+        overflow-y: scroll;
+        .spec-group
+        {
+            padding: 10px;
+            .spec-group-details
+            {
+                font-size: 1.2em;
+                td:first-child
+                {
+                    color:blue;
+                    padding: 8px 80px 6px 2px;                    
+                }
+            }
+        }
+    }
+}
+
+.qa-review-container
+{
+    min-height: 25em;
+    margin-left: 2px;
+    margin-top: 10px;
+    margin-right:18px;
+    .qa-container
+    {
+        box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+        min-height: 12.5em;
+        font-size: 1.4em;
+        padding: 20px;
+        .question
+        {
+            .answer li
+            {
+                padding-right: 32px;
+            }
+        }
+        .question:nth-child(n+2)
+        {
+            margin-top:42px;
+        }
+    }
+    .review-container
+    {
+        box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+        min-height: 12.5em;
+        font-size: 1.3em;
+        padding: 20px;
+        .review
+        {
+
+            .review-title-container
+            {
+                .review-title
+                {
+                    float: left;
+                    font-size: 1.2em;
+                }
+            }
+            .review-images
+            {
+                display: -webkit-box;
+                overflow-x:auto;
+                margin-top:20px;
+                margin-bottom:20px;
+                .icon-container
+                {
+                    .review-image-icons
+                    {
+                        width: 8em;
+                    }
+                }
+            }
+            .review-rating
+            {
+                font-size: 8px;
+                margin-left: 26px;
+                line-height: 25px;
+                .star-icon
+                {
+                    font-size: 3em;
+                }
+            }
+            .likes
+            {
+                display: -webkit-inline-box;
+                float: right;
+                font-size: 1.2em;
+                color:red;
+            }
+            .review-body
+            {
+                padding-right: 60px;
+                padding-left: 20px;
+            }
+            .response
+            {
+                padding-right: 60px;
+            }
+        }
+        .review:nth-child(n+2)
+        {
+            margin-top:75px;
+        }
+    }
+}
+

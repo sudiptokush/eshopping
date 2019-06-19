@@ -1,0 +1,48 @@
+<div class="cart-controls-container">
+    <div class="cart-controls">
+        <button mat-button class="cart-button" (click)="resetCart()">
+            <span class="button-text">Reset cart</span>
+        </button>
+        <button mat-button class="cart-button" (click)="placeOrderFromCart()">
+            <span class="button-text">Place order</span>
+        </button>
+    </div>
+    <div class="cart-info">
+        Total Items - {{itemsCount}}
+    </div>
+    <div class="cart-info">
+        Total Amount  - Value
+    </div>
+</div>
+<div class="item" *ngFor="let item of itemsInCart; let i = index">
+    <div class="item-image-container">
+        <img class="item-image" src="{{item.images[0]}}">
+    </div>
+    <div class="item-desc">
+        <div class="item-name">{{item.name}}</div>
+        <div class="item-details">{{item.label && item.label.toString()}}</div>
+    </div>
+    <div class="item-quantity-container">
+        <button mat-icon-button (click)="addSubCart(i,item.product_id,-1)">
+            <mat-icon>
+                <i class="fa fa-minus" aria-hidden="true"></i>
+            </mat-icon>
+        </button>
+        <input class="item-quantity" [(ngModel)]="item.qty" />
+        <button mat-icon-button (click)="addSubCart(i,item.product_id,1)">
+            <mat-icon>
+                <i class="fa fa-plus" aria-hidden="true"></i>
+            </mat-icon>
+        </button>
+    </div>
+    <div class="item-total">
+        {{item.offer_price * item.qty | number : '1.2'}}
+    </div>
+    <div class="item-delete">
+        <button mat-icon-button (click)="deleteItem(item.id)">
+            <mat-icon>
+                <i class="fa fa-times-circle"></i>
+            </mat-icon>
+        </button>
+    </div>
+</div>

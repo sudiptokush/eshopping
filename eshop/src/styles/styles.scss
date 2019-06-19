@@ -1,0 +1,19 @@
+/* You can add global styles to this file, and also import other style files */
+@import 'variables';
+body {
+    font-size: $theme-font-size;
+    margin:0px !important;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+a
+{
+    cursor: pointer;
+}
+
+@media screen and (max-width: 900px) {
+    body{
+        overflow-x: auto;
+    }
+}

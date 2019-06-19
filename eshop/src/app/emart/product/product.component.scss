@@ -1,0 +1,84 @@
+.pagination
+{
+    
+}
+
+.products
+{
+    display: flow-root;
+    .product
+    {
+        width: 18em;
+        float: left;
+        margin-left: 1%;
+        margin-top: 1%;
+        margin-bottom: 1%;
+        height: 22em;
+        .product-image
+        {
+            width: 12em;
+            margin: 0px 2.2em .5em;
+        }
+        
+        .product-header
+        {
+            text-align: center;
+        }
+        
+        .discounted-price
+        {
+            color: green;
+        }
+        
+        .original-price
+        {
+            margin-right: 10%;
+            color:red;
+        }
+    }
+}
+
+.no-matching-product
+{
+    font-size: 1.5em;
+    margin-top: 49px;
+    margin-left: 20px;
+}
+
+.mat-card
+{
+    padding: 0px;
+}
+
+.mat-card-header {
+    display: block;
+}
+
+.mat-card-title {
+    margin-bottom: 7%;
+}
+
+.mat-card-subtitle {
+    margin-bottom: 0%;
+    height: 34px;
+}
+
+.mat-card-content
+{
+    text-align: -webkit-center;
+    margin-bottom: 0px;
+}
+
+.mat-card-actions
+{
+    margin-left: 0px;
+    margin-right: 0px; 
+    padding: 0;
+    margin-bottom: 0px;
+    display: grid;
+}
+
+.mat-paginator
+{
+    display: inline-flex;
+}

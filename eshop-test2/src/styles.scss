@@ -1,0 +1,123 @@
+body {
+    font: 12px;
+    margin: 0px;
+    padding: 0px;
+}
+
+.header {
+    width: 100vw;
+    height: 4em;
+    background: teal;
+    color: white;
+    line-height: 4em;
+}
+
+.button-transition {
+    width: 100px;
+    height: 2em;
+    transition: width 400px;
+}
+
+button.button-transition:hover {
+    width: 500px;
+}
+
+.dropdown {
+    overflow: hidden;
+}
+
+.nav {
+    background-color: black;
+    font-family: Arial, Helvetica, sans-serif;
+    overflow: hidden;
+    a {
+        color: white;
+        text-decoration: none;
+    }
+    button {
+        background-color: inherit;
+        color: inherit;
+        border: none;
+        outline: none;
+    }
+    
+    .content {
+        display: none;
+        position: absolute;
+        color: red;
+        width: 60%;
+        background-color: yellow;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        // z-index: 1;
+    }
+
+    div{
+        display:inline;
+    }
+
+    button:hover ~.content {
+        display: block;
+    }
+}
+
+.drop-menu {
+    height: 6em;
+    background: yellow;
+    border: red;
+    height: 0px;
+    width: 0px;
+    transition: height width;
+}
+
+div.drop-menu:hover {
+    width: 100px;
+    height: 100px;
+}
+
+div.nav:hover {
+    background: rgb(7, 48, 7);
+}
+
+.main-container {
+    width: 100vw; // border:1px solid red
+    // font-size: 0px;
+}
+
+.container {
+    height: 98vh; // font-size: 12px;
+    // border: solid gray; // min-height: 30em;
+    // display: inline-block;
+    float: left; // border: gray 1px inset
+    // .top {
+    //     height: 30%
+    // }
+    // .bottom {
+    //     height: 70%
+    // } // overflow: auto;
+}
+
+.left-pane {
+    width: 30%;
+    border-right: 1px inset
+}
+
+.right-pane {
+    width: 68.5%; // overflow: auto;
+}
+
+.product {
+    height: 7em;
+    width: 7em;
+    background: red;
+    border: 2px solid yellow;
+    display: block;
+    float: left;
+}
+
+// .part {
+//     height: 7em;
+//     width: 7em;
+//     background: red;
+//     border: 2px solid yellow;
+//     display: inline-block;
+// }

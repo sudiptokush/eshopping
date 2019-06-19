@@ -1,0 +1,82 @@
+@import 'variables';
+.em-header {
+    background-color: $emart-header-background;
+    color: $emart-header-font-color;
+    width: 100vw;
+    height: 4.3em;
+    min-width: 612px;
+    position: fixed;
+    z-index: 1;
+    .left-container {
+        margin-left: 1vw;
+        height: 4.3em;
+        float: left;
+        line-height: 4.3em;
+        .logo {
+            font-size: 2.5em;
+            margin-right: 1em;
+            color: $theme-logo-color;
+        }
+        .search-input-container {
+            width:440px;
+            font-size:1.3em;
+            height:3.2em;
+            .search-input
+            {
+                width:90%;
+            }
+        }
+        .header-button {
+            background-color: $emart-header-background;
+            min-width: 0vw;
+            border: 1px solid $emart-header-background;
+            vertical-align: super;
+        }
+        .header-button:hover {
+            border: 1px solid $emart-header-font-color;
+        }
+    }
+    .right-container {
+        float: right;
+        margin-right: 3vw;
+        height: 4.3em;
+        line-height: 4.3;
+        .round-image {
+            border-radius: 50%;
+            border: 1px solid $emart-header-background;
+            vertical-align: middle;
+        }
+        .round-image:hover {
+            border: 1px solid $emart-header-font-color;
+        }
+        .login-controls {
+            width: 26em;
+            float:left;
+            .header-button {
+                background-color: $emart-header-background;
+                min-width: 0vw;
+                border: 1px solid $emart-header-background;
+                
+            }
+            .header-button:hover {
+                border: 1px solid $emart-header-font-color;
+            }
+        }
+    }
+}
+
+::ng-deep .mat-form-field-underline
+{
+    background: white;
+}
+::ng-deep .mat-form-field-ripple
+{
+    background: white;
+}
+.search-clear
+{
+    line-height: 0 !important;
+    min-width: 0 !important;
+    float:right
+}
+

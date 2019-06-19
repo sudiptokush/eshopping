@@ -1,0 +1,759 @@
+// To do
+1. Filter and search
+2. Search based on filter
+3. Organize
+
+4. User management
+4. New product entry
+5. Payment gateway
+6. 
+7.
+
+//dynamic reactive form
+https://toddmotto.com/angular-dynamic-components-forms
+
+// for formgroup
+https://www.concretepage.com/angular-2/angular-2-formgroup-example
+https://arjunphp.com/angular-2-async-validator-usernameemail-availability-check/
+------------------------------------------------------------------------------------
+//form template
+
+            1. Provide seamless class/ css structure      
+            2. Buttons: clickable, reset, submit
+            2.5. Checkboxgroup simplify and provide in group
+            3. Custom Template of controls
+            4. Adding controls on the fly in an array on click of plus or minus buttons
+            5. Grouping with fieldset and legend
+            6. textarea
+            7. async validation
+            9. Provide json and functions as parameters
+            13. Provide group / formgroup
+            14. Checkboxgroup bug fix groupArray
+            15. Checkboxgroup in group and groupArray implement and check
+            4. Populate drop down lists from service
+            5. Populate drop down list from web
+            6. Required validation in radio buttons
+            7. Check checkboxGroup in jx-form, jx-group, jx-array
+            9. Define sql id / meta data in app.config.ts file
+            11. mat input all types
+            12. Mat radio
+            13. mat select
+            14. mat date
+            15. icon button
+            16. class in mat controls
+            17. Move click events from service to the parent of form control through event emitter or broker service
+            19. Form level validations and group validation
+            20. Move common code of css class to service
+            23. Fab button
+            25. Documentation for json object
+            3. Button groups
+            5. Just like button implement anchor tag
+            6. Debounce effect for async validation
+            9. Dynamic component
+            19. Complete basic and mat controls
+            20. Complete check box group
+1. file upload
+2. Show Required symbol
+            
+4. Custom component
+            
+7. Array Add remove buttons customization
+8. Typeahead
+            
+            21. Radio button, mat radio button, checkbox group, mat checkbox 
+            group --> options from list, function or observable just as select options.
+
+22. collection of name value pair as user control.
+
+    
+//for angular Async validation
+https://github.com/angular/angular/issues/13200
+
+rxjs I was reading
+https://gist.github.com/staltz/868e7e9bc2a7b8c1f754
+
+https://toddmotto.com/emulated-native-shadow-dom-angular-2-view-encapsulation
+------------------------------------------------------------------------------------
+//Good url for search implementation client side in angular 2
+https://codecraft.tv/courses/angular/forms/reactive-model-form/
+
+//json schema forms
+https://gcanti.github.io/resources/json-schema-to-tcomb/playground/playground.html
+
+//very good and professional. Rating: 7/10
+https://github.com/dschnelldavis/angular2-json-schema-form
+
+//good Rating 6/10
+https://libraries.io/github/boban984/angular2-schema-form
+------------------------------------------------------------------------------------
+//Formio
+https://github.com/formio/angular-formio
+------------------------------------------------------------------------------------
+//Good one from basics to create a dynamic form
+https://juristr.com/blog/2017/10/demystify-dynamic-angular-forms/
+------------------------------------------------------------------------------------
+// Angular 2 Form Builder
+https://www.concretepage.com/angular-2/angular-2-4-formbuilder-example
+//formly usage in Angular 2
+https://alligator.io/angular/formly/
+-----------------------------------------------------------------------------------
+//dynamic forms appears good
+https://github.com/udos86/ng-dynamic-forms
+
+-----------------------------------------------------------------------------------
+//plv8
+drop function plv8_test
+CREATE OR REPLACE FUNCTION plv8_test(data jsonb)
+RETURNS jsonb AS $$
+  var f = function removeKeys(obj, keys){
+    var index;
+    for (var prop in obj) {
+        if(obj.hasOwnProperty(prop)){
+            switch(typeof(obj[prop])){
+                case 'string':
+                    index = keys.indexOf(prop);
+                    if(index > -1){
+                        delete obj[prop];
+                    }
+                    break;
+                case 'object':
+                    index = keys.indexOf(prop);
+                    if(index > -1){
+                        delete obj[prop];
+                    }else{
+                        removeKeys(obj[prop], keys);
+                    }
+                    break;
+            }
+        }
+    }
+    return(obj);
+};
+return(f(data,["name"]));
+  
+$$ LANGUAGE plv8 IMMUTABLE STRICT;
+
+SELECT plv8_test(jtest) from json_test;
+
+insert into json_test(jtest) values('
+{
+    "name": "label",
+    "values": ["Lava Red", "8GB RAM", "64GB ROM"]
+
+}')
+------------------------------------------------------------------------------------
+//regexp_replace
+select regexp_replace('in% $the -!list of -stop words -200', '[-,!#$%]+',' ','g');
+-------------------------------------------------------------------------------------
+
+
+CREATE TABLE messages (
+    title       text,
+    body        text,
+    tsv         tsvector
+);
+
+CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
+ON messages FOR EACH ROW EXECUTE PROCEDURE
+tsvector_update_trigger(tsv, 'pg_catalog.english', title, body);
+
+INSERT INTO messages VALUES('title here one two three', 'the body text is here four five six');
+
+update messages set title = 'title here and there one two three four' where title = 'title here and there';
+SELECT * FROM messages;
+
+//postgeres best practises
+https://kukuruku.co/post/postgresql-set-of-practices/
+
+//site for creating fake data in postgres
+https://regilero.github.io/postgresql/english/2017/06/26/postgresql_advanced_generate_series/
+//important sql's
+---------------------------------------------------------------------------------------------
+//inline functions / anonymous code blocks
+do $$
+begin
+  	if exists(select 0 from shopping_cart where user_id = 1 and product_id = 6003) then
+		update shopping_cart set qty = qty + 2 where user_id = 1 and product_id = 6003;
+	end if;
+end $$
+
+//PL/V8 inline functions
+do $$
+  	var o = {};
+	var x = 0;
+    for(var i=0; i<100; i++){
+        x=x+1;
+    }
+$$ LANGUAGE plv8
+----------------------------------------------------------------------------------------------
+//upsert statement
+insert into shopping_cart (user_id,product_id,qty,isactive)
+  values (
+    1,
+    6003,
+	2,
+    true
+  )
+on conflict (user_id,product_id)
+do update set qty = shopping_cart.qty + 2;
+------------------------------------------------------------------------------------------
+
+//for json to insert in table
+create or replace function json_insert_table( table_name text, json_data json ) returns character varying
+    language plpgsql
+    as $$
+  declare  
+    returnValue_ text := '';
+	fields text :='';
+	sql text := '';
+  begin
+  fields := (select string_agg(elem,',') from
+	(SELECT json_object_keys('{"user_id":1,"product_id":"6001","qty":1,"isactive":true}'::json) elem) as e);
+	IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'x') THEN
+        CREATE TYPE x AS (user_id int,product_id bigint, qty int, isactive boolean);
+    END IF;
+	sql = 'insert into shopping_cart(' || fields || ') ' ||
+	'select * from json_populate_record(null::x,' || '''' || json_data || '''' || ')';
+	EXECUTE sql;	
+    return returnValue_;
+  end;
+$$;
+
+----------------------------------------------------------------------------------------------
+//Create master rows with details json
+select c1.id, label, array_to_json(array_agg(to_json(p1)))
+	from category c1 left join  lateral (select id, name, list_price, offer_price from product p where p.cat_id = c1.id) p1
+		on true	group by c1.id
+			 order by c1.id
+----------------------------------------------------------------------------------------------
+//create comma separated string of keys from a json object
+select string_agg(elem,',') from
+(SELECT json_object_keys('{"user_id":1,"product_id":"6001","qty":1,"isactive":true}'::json) elem) as e
+---------------------------------------------------------------------------------------------------
+// Following sql was used to create question answer tables
+insert into question (content,likes,product_id,is_approved,user_id,mdate)
+select lipsum(15) as content, (random()*200)::int as likes, 6003 as product_id, true as is_approved, 1 as user_id, NOW() - '1 year'::INTERVAL * (RANDOM() * 1.5) as mdate
+	from generate_series(1,50000) as generator
+	
+select * from question
+truncate table answer cascade
+ALTER SEQUENCE answer_id_seq RESTART WITH 1;
+update question set product_id = (
+	select id from product where is_approved order by random() limit 1 
+), is_approved = is_approved;
+
+update question q set product_id = 
+(select (random() * 44000)::int + 6003 where q.is_approved=true);
+
+insert into answer (mdate,content,likes,question_id,user_id,is_approved) 
+select NOW() - '1 year'::INTERVAL * (RANDOM() * 1.5) as mdate, lipsum(60) as content, (random()*200)::int as likes, 1 as question_id, 1 as user_id, true as is_approved
+	from generate_series(1,100000) as generator;
+update answer a set question_id = 
+(select (random() * 49999)::int + 1 where a.is_approved=true);
+----------------------------------------------------------------------------------------------------------------
+//following sql was used to create review reponse table
+insert into review (user_id, product_id, mdate, rating, images, content, is_approved, likes, title)
+select 1 as user_id, 6003 as product_id,NOW() - '1 year'::INTERVAL * (RANDOM() * 1.5) as mdate, ((random()*4)::int + 1) as rating,
+ARRAY[
+		'https://robohash.org/' || md5(random()::text) || '.png?size=250x250&set=set1',
+		'https://robohash.org/' || md5(random()::text) || '.png?size=250x250&set=set2',
+		'https://robohash.org/' || md5(random()::text) || '.png?size=250x250&set=set3',
+		'https://robohash.org/' || md5(random()::text) || '.png?size=250x250&set=set4'											
+	] as images, lipsum(20)::text as content, true as is_approved, (random()*200)::int as likes, lipsum(7)::text as title
+	from generate_series(1,50000) as generator
+
+update review r set product_id = 
+(select (random() * 44000)::int + 6003 where r.is_approved=true);
+
+insert into response (user_id, review_id,content,likes,mdate,is_approved)
+select 1 as user_id, 1 as review_id, lipsum(25)::text as content, (random()*200)::int as likes, NOW() - '1 year'::INTERVAL * (RANDOM() * 1.5) as mdate, true as is_approved
+from generate_series(1,100000) as generator
+
+update response r set review_id =
+(select (random() * 49999)::int + 1 where r.is_approved = true);
+-----------------------------------------------------------------------------------------------------------------
+//create images array from robohash and set the images column of product table. This was used.
+update product
+	set images = ARRAY[
+		'https://robohash.org/' || md5(random()::text) || '.png?size=250x250&set=set1',
+		'https://robohash.org/' || md5(random()::text) || '.png?size=250x250&set=set2',
+		'https://robohash.org/' || md5(random()::text) || '.png?size=250x250&set=set3',
+		'https://robohash.org/' || md5(random()::text) || '.png?size=250x250&set=set4'											
+	]
+---------------------------------------------------------------------------------------------------------------
+//Get products with count on category id
+with recursive cte1 as (
+    select id,label, parent_id
+        from category where id = %s
+      union
+        select c1.id, c1.label, c1.parent_id
+          from category c1 inner join cte1 c2
+            on c1.parent_id = c2.id
+      )
+      select * , count(0) OVER() as count from product where cat_id in (
+          select id from cte1 where id not in( select parent_id from cte1 where parent_id is not null)
+      ) order by id offset %s limit %s
+
+
+https://stackoverflow.com/questions/12293888/postgresql-count-the-number-of-children
+with recursive cte1 as (
+	select c.id, label, parent_id, count(0) as prod_cnt from category c
+    	join product p on c.id = p.cat_id group by cat_id, c.id
+    union
+    	select c2.id, c2.label, c2.parent_id, 0 as prod_cnt from cte1 c1
+    		join category c2 on c1.parent_id = c2.id 
+)
+, cte2 as (
+	select c1.id, c1.label, c1.parent_id, sum(c2.prod_cnt) as prod_cnt from category c1 left outer join cte1 on
+    	group by c1.id, c1.label, c1.parent_id order by c1.id
+) select * from cte2 order by id
+--------------------------------------------------------------------------------------------------------------
+
+//Product table set cat_id to random id from category table's id column
+There was a problem that subquery is executed only once and random row is selected then this same row's id was set in the cat_id.
+So in normal going I got same cat_id value for all rows in product table. Remedy to this was in the subquery 
+refer to a column in outer query. Following worked for me.
+select id into temp1  from category where id not in(
+	select distinct parent_id from category where parent_id is not null
+);
+update product set cat_id = (
+	select id from temp1 where brand_id is null order by random() limit 1 
+), brand_id = brand_id;
+-------------------------------------------------------------------------------------------------------------
+
+//product generator
+SELECT(
+    SELECT concat_ws('',name_first, name_middle, name_last) as generated
+    FROM (
+        SELECT string_agg(x,'')
+        FROM (select start_arr[ 1 + ( (random() * 160)::int) % 119 ]
+            FROM
+            (
+                select '{
+                Bac,Bad,Baf,Bag,Baj,Bak,Bal,Bam,Ban,Bap,Bar,Bas,Bat,Baw,Bax,Bay,Baz,
+                Bec,Bed,Bef,Beg,Bej,Bek,Bel,Bem,Ben,Bep,Ber,Bes,Bet,Bew,Bex,Bey,Bez,
+                Bic,Bid,Bif,Big,Bij,Bik,Bil,Bim,Bin,Bip,Bir,Bis,Bit,Biw,Bix,Biy,Biz,
+                Boc,Bod,Bof,Bog,Boj,Bok,Bol,Bom,Bon,Bop,Bor,Bos,Bot,Bow,Box,Boy,Boz,
+                Buc,Bud,Buf,Bug,Buj,Buk,Bul,Bum,Bun,Bup,Bur,Bus,But,Buw,Bux,Buy,Buz,
+                Dec,Ded,Def,Deg,Dej,Dek,Del,Dem,Den,Dep,Der,Des,Det,Dew,Dex,Dey,Dez,
+                Gec,Ged,Gef,Geg,Gej,Gek,Gel,Gem,Gen,Gep,Ger,Ges,Get,Gew,Gex,Gey,Gez}'::text[] as start_arr
+            ) syllarr,            
+            generate_series(1, 1 + (generator*0))
+        ) AS comp3syl(x)
+    ) AS comp_name_1st(name_first),    
+    (
+        SELECT x[ 1 + ( (random() * 85)::int) % 65 ]
+        FROM (
+            select '{ac,ad,af,ag,al,am,an,ap,ar,as,at,ax,az,
+            		ec,ed,ef,eg,el,em,en,ep,er,es,et,ex,ez,
+            		ic,id,if,ig,il,im,in,ip,ir,is,it,ix,iz
+            		oc,od,of,og,ol,om,on,op,or,os,ot,ox,oz
+            		uc,ud,uf,ug,ul,um,un,up,ur,us,ut,ux,uz}'::text[]
+        ) AS z2(x)
+    ) AS comp_name_last1(name_middle),    
+    (
+        SELECT x[ 1 + ( (random() * 45)::int) % 36 ]
+        FROM (
+            select '{-01,-12,-03,-09,-12,-23,-02,-10,-20,-30,-40,-50,-60,-70,-80,-90,-110,-120,-130,-140,-150,-160,-170,-180,-190,-200,-210,-220,-230,-240,-250,-260,-270,-280,-290,-300}'::text[]
+        ) AS z2(x)
+    ) AS comp_name_last(name_last)
+    )
+FROM generate_series(1,1) as generator
+//used to create 50000 products---------------------------------------------------------------------------
+insert into product(name,list_price,code,descr,specs,details,image)
+select
+(
+    SELECT concat_ws('',name_first, name_middle, name_last) as generated
+    FROM (
+        SELECT string_agg(x,'')
+        FROM (select start_arr[ 1 + ( (random() * 160)::int) % 119 ]
+            FROM
+            (
+                select '{
+                Bac,Bad,Baf,Bag,Baj,Bak,Bal,Bam,Ban,Bap,Bar,Bas,Bat,Baw,Bax,Bay,Baz,
+                Bec,Bed,Bef,Beg,Bej,Bek,Bel,Bem,Ben,Bep,Ber,Bes,Bet,Bew,Bex,Bey,Bez,
+                Bic,Bid,Bif,Big,Bij,Bik,Bil,Bim,Bin,Bip,Bir,Bis,Bit,Biw,Bix,Biy,Biz,
+                Boc,Bod,Bof,Bog,Boj,Bok,Bol,Bom,Bon,Bop,Bor,Bos,Bot,Bow,Box,Boy,Boz,
+                Buc,Bud,Buf,Bug,Buj,Buk,Bul,Bum,Bun,Bup,Bur,Bus,But,Buw,Bux,Buy,Buz,
+                Dec,Ded,Def,Deg,Dej,Dek,Del,Dem,Den,Dep,Der,Des,Det,Dew,Dex,Dey,Dez,
+                Gec,Ged,Gef,Geg,Gej,Gek,Gel,Gem,Gen,Gep,Ger,Ges,Get,Gew,Gex,Gey,Gez}'::text[] as start_arr
+            ) syllarr,            
+            generate_series(1, 1 + (generator*0))
+        ) AS comp3syl(x)
+    ) AS comp_name_1st(name_first),    
+    (
+        SELECT x[ 1 + ( (random() * 85)::int) % 65 ]
+        FROM (
+            select '{ac,ad,af,ag,al,am,an,ap,ar,as,at,ax,az,
+            		ec,ed,ef,eg,el,em,en,ep,er,es,et,ex,ez,
+            		ic,id,if,ig,il,im,in,ip,ir,is,it,ix,iz
+            		oc,od,of,og,ol,om,on,op,or,os,ot,ox,oz
+            		uc,ud,uf,ug,ul,um,un,up,ur,us,ut,ux,uz}'::text[]
+        ) AS z2(x)
+    ) AS comp_name_last1(name_middle),    
+    (
+        SELECT x[ 1 + ( (random() * 45)::int) % 36 ]
+        FROM (
+            select '{-01,-12,-03,-09,-12,-23,-02,-10,-20,-30,-40,-50,-60,-70,-80,-90,-110,-120,-130,-140,-150,-160,-170,-180,-190,-200,-210,-220,-230,-240,-250,-260,-270,-280,-290,-300}'::text[]
+        ) AS z2(x)
+    ) AS comp_name_last(name_last)
+    ) as name,
+
+ (random() * 20000 + 1000)::int as list_price,
+ md5(RANDOM()::text) as code,
+ lipsum(20) as descr,
+ lipsum(15) as specs,
+ lipsum(50) as details,
+ 'https://robohash.org/' || random()::text || '.png?size=250x250&set=set1'  as image
+from generate_series(1,50000) as generator
+----------------------------------------------------------------------------------------------------------
+
+//function to create lorem ipsum---------------------------------------------------------------
+create or replace function lipsum( quantity_ integer ) returns character varying
+    language plpgsql
+    as $$
+  declare
+    words_       text[];
+    returnValue_ text := '';
+    random_      integer;
+    ind_         integer;
+  begin
+  words_ := array['lorem', 'ipsum', 'dolor', 'sit', 'amet', 'consectetur', 'adipiscing', 'elit', 'a', 'ac', 'accumsan', 'ad', 'aenean', 'aliquam', 'aliquet', 'ante', 'aptent', 'arcu', 'at', 'auctor', 'augue', 'bibendum', 'blandit', 'class', 'commodo', 'condimentum', 'congue', 'consequat', 'conubia', 'convallis', 'cras', 'cubilia', 'cum', 'curabitur', 'curae', 'cursus', 'dapibus', 'diam', 'dictum', 'dictumst', 'dignissim', 'dis', 'donec', 'dui', 'duis', 'egestas', 'eget', 'eleifend', 'elementum', 'enim', 'erat', 'eros', 'est', 'et', 'etiam', 'eu', 'euismod', 'facilisi', 'facilisis', 'fames', 'faucibus', 'felis', 'fermentum', 'feugiat', 'fringilla', 'fusce', 'gravida', 'habitant', 'habitasse', 'hac', 'hendrerit', 'himenaeos', 'iaculis', 'id', 'imperdiet', 'in', 'inceptos', 'integer', 'interdum', 'justo', 'lacinia', 'lacus', 'laoreet', 'lectus', 'leo', 'libero', 'ligula', 'litora', 'lobortis', 'luctus', 'maecenas', 'magna', 'magnis', 'malesuada', 'massa', 'mattis', 'mauris', 'metus', 'mi', 'molestie', 'mollis', 'montes', 'morbi', 'mus', 'nam', 'nascetur', 'natoque', 'nec', 'neque', 'netus', 'nibh', 'nisi', 'nisl', 'non', 'nostra', 'nulla', 'nullam', 'nunc', 'odio', 'orci', 'ornare', 'parturient', 'pellentesque', 'penatibus', 'per', 'pharetra', 'phasellus', 'placerat', 'platea', 'porta', 'porttitor', 'posuere', 'potenti', 'praesent', 'pretium', 'primis', 'proin', 'pulvinar', 'purus', 'quam', 'quis', 'quisque', 'rhoncus', 'ridiculus', 'risus', 'rutrum', 'sagittis', 'sapien', 'scelerisque', 'sed', 'sem', 'semper', 'senectus', 'sociis', 'sociosqu', 'sodales', 'sollicitudin', 'suscipit', 'suspendisse', 'taciti', 'tellus', 'tempor', 'tempus', 'tincidunt', 'torquent', 'tortor', 'tristique', 'turpis', 'ullamcorper', 'ultrices', 'ultricies', 'urna', 'ut', 'varius', 'vehicula', 'vel', 'velit', 'venenatis', 'vestibulum', 'vitae', 'vivamus', 'viverra', 'volutpat', 'vulputate'];
+    for ind_ in 1 .. quantity_ loop
+      ind_ := ( random() * ( array_upper( words_, 1 ) - 1 ) )::integer + 1;
+      returnValue_ := returnValue_ || ' ' || words_[ind_];
+    end loop;
+    return returnValue_;
+  end;
+$$;
+-----------------------------------------------------------------------------------------------
+//function to get label from product_info
+create or replace function get_product_label( product_info jsonb ) returns character varying
+    language plpgsql
+    as $$
+  declare  
+    returnValue_ text := '';
+  begin
+  	returnValue_ := (select a->'values' from jsonb_array_elements(product_info) as a where a->>'name' = 'label' limit 1 );
+    return returnValue_;
+  end;
+$$;
+--------------------------------------------------------------------------------------------------
+
+//function to create dummy product
+BEGIN
+    return(SELECT(
+    SELECT concat_ws('',name_first, name_middle, name_last) as generated
+    FROM (
+        SELECT string_agg(x,'')
+        FROM (select start_arr[ 1 + ( (random() * 160)::int) % 119 ]
+            FROM
+            (
+                select '{
+                Bac,Bad,Baf,Bag,Baj,Bak,Bal,Bam,Ban,Bap,Bar,Bas,Bat,Baw,Bax,Bay,Baz,
+                Bec,Bed,Bef,Beg,Bej,Bek,Bel,Bem,Ben,Bep,Ber,Bes,Bet,Bew,Bex,Bey,Bez,
+                Bic,Bid,Bif,Big,Bij,Bik,Bil,Bim,Bin,Bip,Bir,Bis,Bit,Biw,Bix,Biy,Biz,
+                Boc,Bod,Bof,Bog,Boj,Bok,Bol,Bom,Bon,Bop,Bor,Bos,Bot,Bow,Box,Boy,Boz,
+                Buc,Bud,Buf,Bug,Buj,Buk,Bul,Bum,Bun,Bup,Bur,Bus,But,Buw,Bux,Buy,Buz,
+                Dec,Ded,Def,Deg,Dej,Dek,Del,Dem,Den,Dep,Der,Des,Det,Dew,Dex,Dey,Dez,
+                Gec,Ged,Gef,Geg,Gej,Gek,Gel,Gem,Gen,Gep,Ger,Ges,Get,Gew,Gex,Gey,Gez}'::text[] as start_arr
+            ) syllarr,            
+            generate_series(1, 1 + (generator*0))
+        ) AS comp3syl(x)
+    ) AS comp_name_1st(name_first),    
+    (
+        SELECT x[ 1 + ( (random() * 85)::int) % 65 ]
+        FROM (
+            select '{ac,ad,af,ag,al,am,an,ap,ar,as,at,ax,az,
+            		ec,ed,ef,eg,el,em,en,ep,er,es,et,ex,ez,
+            		ic,id,if,ig,il,im,in,ip,ir,is,it,ix,iz
+            		oc,od,of,og,ol,om,on,op,or,os,ot,ox,oz
+            		uc,ud,uf,ug,ul,um,un,up,ur,us,ut,ux,uz}'::text[]
+        ) AS z2(x)
+    ) AS comp_name_last1(name_middle),    
+    (
+        SELECT x[ 1 + ( (random() * 45)::int) % 36 ]
+        FROM (
+            select '{-01,-12,-03,-09,-12,-23,-02,-10,-20,-30,-40,-50,-60,-70,-80,-90,-110,-120,-130,-140,-150,-160,-170,-180,-190,-200,-210,-220,-230,-240,-250,-260,-270,-280,-290,-300}'::text[]
+        ) AS z2(x)
+    ) AS comp_name_last(name_last)
+    )
+FROM generate_series(1,1) as generator);
+   
+END
+
+
+---------------------------------------------------------------------------------------------------
+//search based recursive query to return all children
+with recursive 
+cte1 as (
+	SELECT id, label, parent_id
+        FROM category
+            WHERE to_tsvector('english', label) @@ to_tsquery('english', 'lamb')
+), 
+cte2 as(
+	select id, label, 
+    CASE
+    	WHEN parent_id in(select id from cte1)
+    	then parent_id
+    	else null::int
+    END as parent_id
+    from cte1
+) , 
+cte3 as(  
+    select id, label, parent_id from cte2 
+    union all
+    	select c1.id, c1.label, c1.parent_id
+    		from category c1 inner join cte3 c3
+    			on c1.parent_id = c3.id
+) select * from cte3 order by id;
+
+with recursive cte1 as(
+	(select id, label, cast(nullif(NULL, '') AS int) as parent_id
+    	from category where id <=300 limit 100)
+    union all
+    select c1.id, c1.label, c1.parent_id
+    	from category c1 inner join cte1 c2
+    		on c1.parent_id = c2.id
+) select distinct(id), label, parent_id from cte1 order by id ;
+
+//----------------------------------------------------------------------------------
+'post:query:categories:product:on:input2':`create temporary table temp1 (id int not null, label text, parent_id int,cat_cnt int, product_cnt int) on commit drop;  
+  insert into temp1 
+          with recursive 
+        cte1 as (
+          SELECT id, label, parent_id
+                FROM category
+                    WHERE 
+                    to_tsvector('english', label) @@ to_tsquery('english', %L)
+        ), 
+        cte2 as(
+          select id, label, 
+            CASE
+              WHEN parent_id in(select id from cte1)
+              then parent_id
+              else null::int
+            END as parent_id
+            from cte1
+        ) , 
+        cte3 as(  
+            select id, label, parent_id from cte2 
+            union all
+              select c1.id, c1.label, c1.parent_id
+                from category c1 inner join cte3 c3
+                  on c1.parent_id = c3.id
+        ) ,
+        cte4 as (select c1.id, c1.label, c1.parent_id, sum(CASE WHEN c2.id is null then 0 else 1 end) as cat_cnt	
+              from cte3 c1 left outer join cte3 c2 
+                  on c1.id = c2.parent_id
+                      group by c1.id, c1.label, c1.parent_id
+                        order by c1.id),
+        cte5 as (select c1.id, c1.label, c1.parent_id, min(c1.cat_cnt) as cat_cnt,
+                sum(CASE WHEN p.id is null then 0 else 1 end) as product_cnt
+                  from cte4 c1 left outer join product p   	
+                      on c1.id = p.cat_id
+                          group by c1.id, c1.label, c1.parent_id
+                            order by c1
+                            .id)
+        select c2.id, c2.label || ' (' || 
+                CASE WHEN c2.cat_cnt = 0 then c2.product_cnt else c2.cat_cnt END
+                || ')' as label, c2.parent_id, c2.cat_cnt,c2.product_cnt from cte5 c2;
+         update temp1 t set parent_id = -1 where t.parent_id is null;
+         insert into temp1(id,label,parent_id,cat_cnt,product_cnt) values (-1,'Categories',null,0,0);
+     select id,label,parent_id,cat_cnt,product_cnt from temp1 t order by t.id;`
+
+//--------------------------------------------------------------------------------------------------------
+  , 'post:query:products:on:category1': `select * from product where cat_id = %s;`            
+  , 'post:query:categories:product:on:input1': `with cte2 as (
+    with cte1 as (
+        SELECT id, label, cast(nullif(NULL, '') AS int) as parent_id,
+        COALESCE(parent_id,0) as id2
+      FROM category WHERE id in(
+       SELECT id
+       FROM category
+      WHERE to_tsvector('english', label) @@ to_tsquery('english', %L)
+    ))
+    select id,label,parent_id ,
+      CASE min(id2)
+          WHEN 0
+              then 0
+          ELSE
+              count(id)
+          END as cat_cnt
+      from cte1 
+          group by id,label,parent_id 
+          order by id
+  )
+    select c2.id, label || ' (' || 
+      CASE
+      WHEN min(cat_cnt) = 0 
+      then count(p.id)
+      ELSE min(cat_cnt)
+      end
+      || ')' as label,parent_id, min(cat_cnt) as cat_cnt,  count(p.id) as product_cnt
+      from cte2 c2
+          left join product p
+              on c2.id = p.cat_id
+                  group by c2.id,label,parent_id
+                    order by c2.id;`
+//--------------------------------------------------------------------------------------------------------
+  , genre1: `WITH RECURSIVE genres_materialized_path AS (
+        SELECT id, name, ARRAY[]::INTEGER[] AS path
+        FROM genres WHERE parent_id IS NULL
+      
+        UNION ALL
+      
+        SELECT genres.id, genres.name, genres_materialized_path.path || genres.parent_id
+        FROM genres, genres_materialized_path
+        WHERE genres.parent_id = genres_materialized_path.id
+      ) SELECT * FROM genres_materialized_path WHERE 15 = genres_materialized_path.path[array_upper(genres_materialized_path.path,1)];`
+  , emp: `with recursive cte1 as (
+        select id, name, parent_id from emp where parent_id is null
+          
+          union all
+          
+          select e.id, e.name, e.parent_id from emp e
+            inner join cte1 c
+              on e.parent_id = c.id                    
+      ) select * from cte1 order by id;`
+  , emp1: `WITH RECURSIVE cte1 AS (
+        SELECT id, name, parent_id,ARRAY[]::INTEGER[] AS path
+        FROM emp WHERE parent_id IS NULL
+      
+        UNION ALL
+      
+        SELECT emp.id, emp.name, emp.parent_id, cte1.path || emp.parent_id
+        FROM emp, cte1
+        WHERE emp.parent_id = cte1.id
+      ) SELECT * FROM cte1;`
+  , mockCnt: `WITH RECURSIVE cte1 AS (
+    SELECT id, label, parent_id,0 AS cnt
+    FROM mock_data WHERE parent_id IS NULL
+  
+    UNION ALL
+  
+    SELECT mock.id, mock.label, mock.parent_id, cte1.cnt + 1
+    FROM mock_data mock, cte1
+    WHERE mock.parent_id = cte1.id
+  ) SELECT * FROM cte1;`
+//------------------------------------------------------------------------------------------------------
+  , multiSql:`
+  with cte1 as(
+    SELECT id, label,  parent_id
+       FROM cats
+         WHERE to_tsvector('english', label) @@ to_tsquery('english', 'pork')
+  ) select * into temp11 from cte1;
+  
+//------------------------------------------------------------------------------------------------------
+drop table temp1,temp2;
+select c1.id, c1.label, c1.parent_id, sum(CASE WHEN c2.id is null then 0 else 1 end) as cat_count	
+    into temp1
+	from cats c1 left outer join cats c2 
+    	on c1.id = c2.parent_id
+        	group by c1.id
+        		order by c1.id;
+
+select t.id, t.label, t.parent_id, t.cat_count,
+sum(CASE WHEN p.id is null then 0 else 1 end) as product_count into temp2
+	from temp1 t left outer join product p
+    	
+    	on t.id = p.cat_id
+        	group by t.id, t.label, t.parent_id, t.cat_count
+        		order by t.id;
+select id, t.label || ' (' || 
+CASE WHEN t.cat_count = 0 then t.product_count else t.cat_count end
+
+|| ')' as label, parent_id from temp2 t
+
+//------------------------------------------------------------------------------------------------------
+select c1.id, c1.label, c1.parent_id, count(c1.id) as child_cnt
+	from cats c1 left outer join cats c2
+    	on c1.id = c2.parent_id
+        	group by c1.id
+        		order by c1.id
+//------------------------------------------------------------------------------------------------------
+with cte2 as (
+    with cte1 as (
+        SELECT id, label, cast(nullif(NULL, '') AS int) as parent_id,
+        COALESCE(parent_id,0) as id2
+      FROM cats WHERE id in(
+       SELECT id
+       FROM cats
+      --WHERE to_tsvector('english', label) @@ to_tsquery('english', '')
+    ))
+    select id,label,parent_id ,
+      CASE min(id2)
+          WHEN 0
+              then 0
+          ELSE
+              count(id)
+          END as cat_cnt
+      from cte1 
+          group by id,label,parent_id 
+          order by id
+  )
+    select c2.id, label || ' (' || 
+      CASE
+      WHEN min(cat_cnt) = 0 
+      then count(p.id)
+      ELSE min(cat_cnt)
+      end
+      || ')' as label,parent_id, min(cat_cnt) as cat_cnt,  count(p.id) as product_cnt
+      from cte2 c2
+          left join product p
+              on c2.id = p.cat_id
+                  group by c2.id,label,parent_id
+                    order by c2.id;
+//-------------------------------------------------------------------------------------------------------
+with cte2 as (
+    with cte1 as (
+      select c1.id,c1.label,c1.parent_id, 
+        COALESCE(c2.id,0) as id2 
+          from category c1 left join category c2 on c1.id = c2.parent_id
+    )
+    select id,label,parent_id ,
+      CASE min(id2)
+          WHEN 0
+              then 0
+          ELSE
+              count(id)
+          END as cat_cnt
+      from cte1 
+          group by id,label,parent_id 
+          order by id
+  )
+    select c2.id, label || ' (' || 
+      CASE
+      WHEN min(cat_cnt) = 0 
+      then count(p.id)
+      ELSE min(cat_cnt)
+      end
+      || ')' as label,parent_id, min(cat_cnt) as cat_cnt,  count(p.id) as product_cnt
+      from cte2 c2
+          left join product p
+              on c2.id = p.cat_id
+                  group by c2.id,label,parent_id
+                    order by c2.id;
+
+
+https://www.mockaroo.com/
+Formula type for random images
+'https://robohash.org/' + format(random(1,10000),0) + '.png?size=250x250&set=set1'  
+//good angular 2 tree and many other libraries
+https://libraries.io/explore/typescript-angular2-libraries?keywords=4%2CAngular+4%2Cangular+2%2Ctree%2Cangular-treeview%2Cangular+4&licenses=MIT%2CGPL-2.0&platforms=NPM
+// Angular 2 tree
+https://angular2-tree.readme.io/docs
+//wijmo
+http://demos.wijmo.com/5/Angular2/TreeViewIntro/TreeViewIntro/
+//creating tree from scratch. good one
+https://blog.imaginea.com/render-an-infinite-tree-in-angular-2/
+//ngx-treeview good one
+https://devarchy.com/angular/ngx-treeview
+//JQWidgets
+https://www.jqwidgets.com/angular/?gclid=EAIaIQobChMIqoGur-DH1wIVWB0rCh1_eww0EAMYASAAEgKZT_D_BwE
+//ng2-tree
+https://github.com/valor-software/ng2-tree#eyes-demo
+//prime-ng
+https://www.primefaces.org/primeng/#/tree
+//css good tutorial
+https://www.tutorialspoint.com/css/css_measurement_units.htm

@@ -1,0 +1,42 @@
+.header-container
+{
+    width: 100vw;
+    height: 4.3em;
+    line-height: 4.3em
+}
+
+.body-container
+{
+    display: flex;
+    .collapse-button-container
+    {    
+        i.reverse  
+        {
+            transform:rotateY(180deg);
+        } 
+    }
+
+    .side-bar-container
+    {
+        float:left;
+        max-height: 84vh;
+        margin-left: 5px;
+    }
+    .content-container
+    {
+        min-height: 84vh;
+        float: left;
+        margin-left: 1%;
+        min-width: 77%;
+    }
+}
+
+.footer-container
+{
+    width: 100vw;
+    height: 4.3em;
+    float: left;
+}
+
+
+
